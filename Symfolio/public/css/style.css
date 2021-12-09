@@ -1,0 +1,41 @@
+body {
+    background-repeat: no-repeat;
+}
+
+.container{
+    margin-top : 7rem;
+
+}
+
+.btn-danger{
+    padding-top:0.3rem;
+    padding-bottom:0.3rem;
+}
+.btn-warning{
+    padding-top:0.3rem;
+    padding-bottom:0.3rem; 
+    padding-left: 1.175rem;
+    padding-right: 1.175rem;
+}
+
+.fa-times, .fa-edit{
+    font-size:1.5rem;
+}
+.action-btn{
+    height:2.1rem;
+}
+
+.blockBtn a{
+    width: 100%;
+}
+
+#sousTitre{
+    margin: 2rem;
+}
+.content{
+    margin-top: 2rem;
+}
+
+#btAdd{
+    margin-left: 1rem;
+}

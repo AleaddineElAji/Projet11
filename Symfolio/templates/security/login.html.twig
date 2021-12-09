@@ -1,0 +1,43 @@
+{% extends "base.html.twig" %}
+
+{% block body %}
+
+    {% if not app.user %}
+
+        <h1 class="text-center mb-5">Connexion à l'interface d'administration</h1>
+
+        <section class="d-flex justify-content-center">
+            <form action="{{path('security_login')}}" method="POST" class="col-6">
+                <div class="d-flex flex-column mb-3">
+                    <label for="_username" class="form-label">Nom d'utilisateur</label>
+                    <input type="text" class="form-control" placeholder="Identifiant..." required name="_username">
+                </div>
+                <div class="d-flex flex-column mb-3">
+                    <label for="_password" class="form-label">Mot de passe</label>
+                    <input type="password" class="form-control" placeholder="Mot de passe..." required name="_password">
+                </div>
+                <div class="d-flex justify-content-center">
+                    <input type="submit" class="btn btn-success" value="Connexion">
+                </div>
+            </form>
+        </section>
+
+    {% else %}
+        <h1 class="text-center mb-5 alert alert-danger">Vous êtes déjà connecté, veuillez vous déconnecter.</h1>
+        <section class="d-flex justify-content-center">
+            <form action="{{path('security_login')}}" method="POST" class="col-6">
+                <div class="d-flex flex-column mb-3">
+                    <label for="_username" class="form-label">Nom d'utilisateur</label>
+                    <input type="text" class="form-control" placeholder="Identifiant..." disabled name="_username" value="{{app.user.username}}">
+                </div>
+                <div class="d-flex flex-column mb-3">
+                    <label for="_password" class="form-label">Mot de passe</label>
+                    <input type="password" class="form-control" placeholder="Mot de passe..." disabled name="_password" value="azerty123456">
+                </div>
+                <div class="d-flex justify-content-center">
+                    <input type="submit" class="btn btn-success" disabled value="Connexion">
+                </div>
+            </form>
+        </section>
+    {% endif %}
+{% endblock %}

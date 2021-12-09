@@ -1,0 +1,15 @@
+{% extends "base.html.twig" %}
+
+{% block body %}
+<div>
+    <h2>{{ projet.title }}</h2>
+    <div class="metadata">Projet effectué entre le 06/12/2021 et le 13/12/2021</div>
+    <div class="content">
+        <div class="d-flex justify-content-center">
+            <img src="{{projet.image}}" alt="">
+        </div>
+        <hr>
+        {{projet.description | raw}}
+    </div>
+</div>
+{% endblock %}
