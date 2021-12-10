@@ -39,3 +39,12 @@ body {
 #btAdd{
     margin-left: 1rem;
 }
+
+#btAdmin{
+    width: 100%;
+    justify-content: right;
+}
+
+#navbarAl{
+    width: 100%;
+}
