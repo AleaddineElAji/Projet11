@@ -43,8 +43,32 @@ body {
 #btAdmin{
     width: 100%;
     justify-content: right;
+    display: flex;
 }
 
 #navbarAl{
     width: 100%;
+}
+
+#titlePojetShow {
+align-items: center;
+}
+
+#titlePojetShow h2{
+    width: fit-content;
+}
+
+#titlePojetShow a{
+    width: fit-content;
+}
+
+@media (max-width: 1000px) {
+    #btAdmin{
+        width: fit-content;
+        display: block;
+    }
+    
+    #navbarAl{
+        width: fit-content;
+    }
 }

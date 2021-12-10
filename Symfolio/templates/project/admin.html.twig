@@ -4,7 +4,7 @@
     {% if app.user %}
 
     <div class="d-flex justify-content-center align-items-center">
-        <h1 class="text-center">{{app.user.username|capitalize}} </h1>
+        <h1 class="text-center">{{app.user.username|capitalize}}</h1>
 
         <a id="btAdd" class="btn btn-secondary" href="{{path('project_create')}}">Ajoutez un projet</a>
     </div>

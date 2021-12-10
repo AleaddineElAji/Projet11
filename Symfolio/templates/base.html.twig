@@ -12,6 +12,7 @@
     {#{{ encore_entry_link_tags('app') }}#}
     {% endblock %}
     <script src="https://kit.fontawesome.com/cbd6043666.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
     {% block javascripts %}
     {#{{ encore_entry_script_tags('app') }}#}
     {% endblock %}
@@ -31,7 +32,7 @@
                     <li class="nav-item">
                         <a class="nav-link" href="{{ path('project')}}">Projets</a>
                     </li>
-                    <div id="btAdmin" class="d-flex">
+                    <div id="btAdmin">
                         {% if app.user %}
                         <li class="nav-item">
                             <a class="nav-link" href="{{ path('project_admin') }}">Administration</a>

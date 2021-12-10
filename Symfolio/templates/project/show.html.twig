@@ -2,14 +2,18 @@
 
 {% block body %}
 <div>
-    <h2>{{ projet.title }}</h2>
+    <div id="titlePojetShow" class="row">
+        <h2>{{ projet.title }}</h2>        
+        <a href="{{projet.github | raw}}"><i class="fab fa-github"></i></a>
+        <a href="{{projet.weblink | raw}}"><i class="fas fa-link"></i></a>
+    </div>
     <div class="metadata">Projet effectué entre le 06/12/2021 et le 13/12/2021</div>
     <div class="content">
         <div class="d-flex justify-content-center">
             <img src="{{projet.image}}" alt="">
         </div>
         <hr>
-        {{projet.description | raw}}
+        {{projet.description | raw}}       
     </div>
 </div>
 {% endblock %}

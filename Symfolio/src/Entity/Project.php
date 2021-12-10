@@ -58,6 +58,12 @@ class Project
      */
     private $weblink;
 
+
+    /**
+     * @ORM\Column(type="datetime_immutable", nullable=true)
+     */
+    private $created_at;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -119,6 +125,18 @@ class Project
     public function setWeblink(string $weblink): self
     {
         $this->weblink = $weblink;
+
+        return $this;
+    }
+
+    public function getCreatedAt(): ?\DateTimeImmutable
+    {
+        return $this->created_at;
+    }
+
+    public function setCreatedAt(?\DateTimeImmutable $created_at): self
+    {
+        $this->created_at = $created_at;
 
         return $this;
     }
