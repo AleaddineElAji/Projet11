@@ -7,6 +7,14 @@
 
 <h1>{% if editMode %}Modifier le projet {% else %} Création de projet {% endif %}</h1>
 {{ form_start(formProject) }}
+{% if editMode %}
+    {% for image in  projects.images %} 
+<div>
+    <img src="{{ asset('/uploads/' ~ image.name)}}" alt="Image">
+    <a href="{{path( 'annonce_delete_image', {'id': projects.id} )}}" class="btn btn-primary" data-delete data-token="{{ csrf_token('delete' ~ image.id) }}">Supprimer</a>
+</div>
+    {% endfor %}
+{% endif %}
 {{ form_row(formProject.title, {'attr' : {'placeholder' : 'Titre du projet'}}) }}
 {{ form_row(formProject.description, {'attr' : {'placeholder' : 'Description du projet'}}) }}
 {{ form_row(formProject.image, {'attr' : {'placeholder' : 'Mockup du projet'}}) }}
@@ -14,7 +22,12 @@
 {{ form_row(formProject.weblink, {'attr' : {'placeholder' : 'Lien du projet'}}) }}
 
 <input type="submit" name="add-project" class="btn btn-success mt-3" value="{% if editMode %}Modifier{% else %}Ajouter le projet{% endif %}">
-
+{{ form_rest(formProject) }}
 {{ form_end(formProject) }}
 
+{% endblock %}
+
+
+{% block javascripts %}
+    <script src="{{asset('js/images.js') }}" type="text/javascript"></script>
 {% endblock %}

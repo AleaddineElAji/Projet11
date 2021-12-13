@@ -124,19 +124,20 @@ class ProjectController extends AbstractController
         }
         return $this->render('project/create.html.twig',[
             'formProject' => $form->createView(),
-            'projetEd' => $project->getImages(),
-            'editMode'    => $project->getId() !== null
+            'projetImgEdit' => $project->getImages(),
+            'editMode'    => $project->getId() !== null,
+            'projects' =>$project
         ]);
     }
 
     /**
-     *@Route("/supprime/image/{id}", name="annonce_delete_image", methods="DELETE")
+     *@Route("/delete/image/{id}", name="annonce_delete_image", methods="DELETE")
      */
     public function deleteImage(Images $image, Request $request){
         $data = json_decode($request->getContent(), true);
         if($this->isCsrfTokenValid('delete'.$image->getId(), $data['_token'])){
             $nom = $image->getName();
-            unlink($this->getParameter('images_directory').'/'.$nom.'/');
+            unlink($this->getParameter('images_directory').'/'.$nom);
             $em = $this->getDoctrine()->getManager();
             $em->remove($image);
             $em->flush();
