@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\ProjectRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -68,6 +70,16 @@ class Project
      */
     private $finishedAt;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Images::class, mappedBy="projets", orphanRemoval=true, cascade={"persist"})
+     */
+    private $images;
+
+    public function __construct()
+    {
+        $this->images = new ArrayCollection();
+    }
+
     public function getId(): ?int
     {
         return $this->id;
@@ -100,7 +112,7 @@ class Project
     public function getImage(): ?string
     {
         return $this->image;
-    }
+    }  
 
     public function setImage(?string $image): self
     {
@@ -153,6 +165,36 @@ class Project
     public function setFinishedAt(?\DateTimeImmutable $finishedAt): self
     {
         $this->finishedAt = $finishedAt;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Images[]
+     */
+    public function getImages(): Collection
+    {
+        return $this->images;
+    }
+
+    public function addImage(Images $image): self
+    {
+        if (!$this->images->contains($image)) {
+            $this->images[] = $image;
+            $image->setProjets($this);
+        }
+
+        return $this;
+    }
+
+    public function removeImage(Images $image): self
+    {
+        if ($this->images->removeElement($image)) {
+            // set the owning side to null (unless already changed)
+            if ($image->getProjets() === $this) {
+                $image->setProjets(null);
+            }
+        }
 
         return $this;
     }

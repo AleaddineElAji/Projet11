@@ -6,6 +6,7 @@ use App\Entity\Project;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 
 class ProjectType extends AbstractType
 {
@@ -17,6 +18,12 @@ class ProjectType extends AbstractType
             ->add('image')
             ->add('github')
             ->add('weblink')
+            ->add('images',FileType::class,[
+                'label' => false,
+                'multiple' => true,
+                'mapped' => false,
+                'required' => false
+            ])
         ;
     }
 

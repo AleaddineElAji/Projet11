@@ -2,14 +2,16 @@
 
 namespace App\Controller;
 
+use App\Entity\Images;
 use App\Entity\Project;
-use App\Repository\ProjectRepository;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\Request;
-use Doctrine\Persistence\ManagerRegistry;
-use Symfony\Component\Routing\Annotation\Route;
 use App\Form\ProjectType;
+use App\Repository\ProjectRepository;
+use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class ProjectController extends AbstractController
 {
@@ -38,7 +40,6 @@ class ProjectController extends AbstractController
     {
         $repo = $this->getDoctrine()->getRepository(Project::class);
         $allProjects = $repo->findAll();
-        
         return $this->render('project/admin.html.twig', [
             'projets' => $allProjects
         ]);
@@ -50,21 +51,26 @@ class ProjectController extends AbstractController
     */
     public function form(Project $project = null, Request $request, ManagerRegistry $doctrine){
         $manager = $doctrine->getManager();
-        
         if(!$project){
             $project = new Project();
 
         }
-
-
         $form = $this->createForm(ProjectType::class, $project);
-
         $form->handleRequest($request);
-        
         if($form->isSubmitted() && $form->isValid()){
+            $images =$form->get('images')->getData();
+            foreach ($images as $image){
+                $fichier = md5(uniqid()).'.'.$image-> guessExtension();
+                $image->move(
+                    $this->getParameter('images_directory'),
+                    $fichier
+                );
+               $img = new Images(); 
+               $img->setName($fichier);
+               $project->addImage($img);
+            }
             $manager->persist($project);
             $manager->flush();
-
             return $this->redirectToRoute('project_show', ['id' => $project->getId()]);
         }
         return $this->render('project/create.html.twig',[
@@ -77,11 +83,8 @@ class ProjectController extends AbstractController
      * @Route("/project/{id}", name="project_show")
      */
     public function show(Project $projet){
-        
-        
         return $this->render("project/show.html.twig",[
-            'projet'   => $projet,
-            
+            'projet'   => $projet, 
         ]);
     }
     
@@ -93,8 +96,50 @@ class ProjectController extends AbstractController
         $manager = $doctrine->getManager();
         $manager->remove($project);
         $manager->flush();
-
         return $this->redirectToRoute('project_admin');
+    }
 
+
+    /**
+     *@Route("/project/edit/{id}", name="project_edit")
+     */
+    public function edit(Request $request, Project $project): Response 
+    {
+        $form = $this->createForm(ProjectType::class, $project);
+        $form->handleRequest($request);
+        if($form->isValid() && $form->isSubmitted()){
+            $images =$form->get('images')->getData();
+            foreach ($images as $image){
+                $fichier = md5(uniqid()).'.'.$image-> guessExtension();
+                $image->move(
+                    $this->getParameter('images_directory'),
+                    $fichier
+                );
+               $img = new Images(); 
+               $img->setName($fichier);
+               $project->addImage($img);
+            }
+            $this->getDoctrine()->getManager()->flush();
+            return $this->redirectToRoute('project');
+        }
+        return $this->render('Project/edit.html.twig',[
+            'project' => $project,
+            'form' => $form->createView(),
+        ]);
+    }
+
+    /**
+     *@Route("/supprime/image/{id}", name="annonce_delete_image", methods="DELETE")
+     */
+    public function deleteImage(Images $image, Request $request){
+        $data = json_decode($request->getContent(), true);
+        if($this->isCsrfTokenValid('delete'.$image->getId(), $data['_token'])){
+            $nom = $image->getName();
+            unlink($this->getParameter('images_directory').'/'.$nom.'/');
+            $em = $this->getDoctrine()->getManager();
+            $em->remove($image);
+            $em->flush();
+            return new JsonResponse(['success'=> 1]);
+        }
     }
 }
