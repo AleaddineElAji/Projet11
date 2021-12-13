@@ -13,6 +13,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
+
 class ProjectController extends AbstractController
 {
     /**
@@ -53,7 +54,6 @@ class ProjectController extends AbstractController
         $manager = $doctrine->getManager();
         if(!$project){
             $project = new Project();
-
         }
         $form = $this->createForm(ProjectType::class, $project);
         $form->handleRequest($request);
@@ -107,7 +107,7 @@ class ProjectController extends AbstractController
     {
         $form = $this->createForm(ProjectType::class, $project);
         $form->handleRequest($request);
-        if($form->isValid() && $form->isSubmitted()){
+        if( $form->isSubmitted() && $form->isValid() ){
             $images =$form->get('images')->getData();
             foreach ($images as $image){
                 $fichier = md5(uniqid()).'.'.$image-> guessExtension();
@@ -122,9 +122,10 @@ class ProjectController extends AbstractController
             $this->getDoctrine()->getManager()->flush();
             return $this->redirectToRoute('project');
         }
-        return $this->render('Project/edit.html.twig',[
-            'project' => $project,
-            'form' => $form->createView(),
+        return $this->render('project/create.html.twig',[
+            'formProject' => $form->createView(),
+            'projetEd' => $project->getImages(),
+            'editMode'    => $project->getId() !== null
         ]);
     }
 
@@ -140,6 +141,8 @@ class ProjectController extends AbstractController
             $em->remove($image);
             $em->flush();
             return new JsonResponse(['success'=> 1]);
+        }else{
+            return new JsonResponse(['error'=> 'Token Invalide', 400]);
         }
     }
 }
