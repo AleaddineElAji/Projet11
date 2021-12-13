@@ -1,8 +1,8 @@
 window.onload = () => {
     let links = document.querySelectorAll("[data-delete]");
 
-    for (link of links) {
-        link.addEventListener("click",function(e) {
+    for (links of links) {
+        links.addEventListener("click",function(e) {
             e.preventDefault();
 
             if(confirm("Voulez-vous supprimer cette image ?")){
@@ -13,9 +13,10 @@ window.onload = () => {
                         "Content-Type" : "application/json"
                         
                     },
-                    body: JSON.stringify({"_token": this.dataset.token})
+                    body: JSON.stringify({"_token": this.dataset.token}),
+
                 }).then(
-                    response => response.json()
+                    response => response.json(),
                 ).then(data => {
                     if (data.success){
                         this.parentElement.remove()
@@ -28,3 +29,5 @@ window.onload = () => {
     }
 
 }
+
+

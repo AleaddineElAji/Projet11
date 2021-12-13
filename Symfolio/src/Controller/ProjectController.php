@@ -131,7 +131,7 @@ class ProjectController extends AbstractController
     }
 
     /**
-     *@Route("/delete/image/{id}", name="annonce_delete_image", methods="DELETE")
+     *@Route("/supprime/image/{id}", name="annonce_delete_image", methods="DELETE")
      */
     public function deleteImage(Images $image, Request $request){
         $data = json_decode($request->getContent(), true);
